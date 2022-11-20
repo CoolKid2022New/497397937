@@ -1,0 +1,370 @@
+if game.PlaceId == 286090429 then
+game.StarterGui:SetCore("SendNotification", { 
+
+     Title = "Notification"; 
+     Text = "Wait To load";
+     Duration = 3; 
+ }) 
+ 
+ wait(1)
+               
+game.StarterGui:SetCore("SendNotification", { 
+
+     Title = "Notification"; 
+     Text = "SimpleNet Loading";
+     Duration = 2; 
+ }) 
+ 
+ wait(3) 
+ 
+ game.StarterGui:SetCore("SendNotification", { 
+
+     Title = "Notification"; 
+     Text = "SimpleNet Loaded";
+     Duration = 2; 
+ }) 
+ 
+ wait(1)
+ 
+ else
+ 	return 
+ 	game.StarterGui:SetCore("SendNotification", {
+ 		
+ 		Title = "Notification";
+ 		Text = "Wrong Game";
+ 		Duration = "3";
+ 	})
+end
+
+local kavoUi = loadstring(game:HttpGet("https://raw.githubusercontent.com/NTDCore/NightBedCommunityOfficial/main/Theme/Night/bed/lol/XD/Chill/long/kavo.lua"))()
+local window = kavoUi.CreateLib("SimpleNet [Arsenal]", "Ocean")
+local entity = loadstring(game:HttpGet("https://raw.githubusercontent.com/NTDCore/NightBedCommunityOfficial/main/Theme/Night/bed/lol/XD/Chill/long/kavo.lua"))()
+local colorbox
+local function makeRainbowText(text)
+	spawn(function()
+		colorbox = Color3.fromRGB(170,0,170)
+		local x = 0
+		while wait() do
+			colorbox = Color3.fromHSV(x,1,1)
+			x = x + 4.5/255
+			if x >= 1 then
+				x = 0
+			end
+		end
+	end)
+	spawn(function()
+		repeat
+			wait()
+			text.TextColor3 = colorbox
+		until true == false
+	end)
+end
+  
+local MainToggle = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+local ToggleBtn = Instance.new("ImageButton")
+
+MainToggle.Name = "MainToggle"
+MainToggle.Parent = game.CoreGui
+MainToggle.ResetOnSpawn = false
+
+Frame.Parent = MainToggle
+Frame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+Frame.BackgroundTransparency = 0.200
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.0109622413, 0, 0.0136186769, 0)
+Frame.Size = UDim2.new(0, 149, 0, 149)
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.0402684584, 0, 0.798657715, 0)
+TextLabel.Size = UDim2.new(0, 132, 0, 30)
+TextLabel.Font = Enum.Font.SourceSansLight
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000 
+TextLabel.TextWrapped = true
+TextLabel.Text = "SimpleNet"
+makeRainbowText(TextLabel, true)
+
+UICorner.Parent = Frame
+
+ToggleBtn.Name = "ToggleBtn"
+ToggleBtn.Parent = Frame
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ToggleBtn.BackgroundTransparency = 1.000
+ToggleBtn.Position = UDim2.new(0.137143791, 0, 0.0700296983, 0)
+ToggleBtn.Size = UDim2.new(0, 110, 0, 110)
+ToggleBtn.Image = "rbxassetid://9423059734"
+ToggleBtn.MouseButton1Down:connect(function()
+  kavoUi:ToggleUI()
+end)
+
+--Modules
+
+
+--tabs
+
+local Tab1 = window:NewTab("Main")
+
+local Section1 = Tab1:NewSection("Silent Aim")
+
+local Section2 = Tab1:NewSection("Settings")
+
+local Section3 = Tab1:NewSection("Player")
+
+local Tab2 = window:NewTab("GunMods")
+
+local Section4 = Tab2:NewSection("GunMods")
+
+local Tab3 = window:NewTab("Visuals")
+
+local Section5 = Tab3:NewSection("Chams")
+
+local Section6 = Tab3:NewSection("ESP")
+
+local Section7 = Tab2:NewSection("GunModiFications")
+
+--Section1
+
+Section1:NewToggle("SilentAim","SilentAim", function(state)
+	if state then
+		local dwCamera = workspace.CurrentCamera
+  local dwRunService = game:GetService("RunService")
+  local dwUIS = game:GetService("UserInputService")
+  local dwEntities = game:GetService("Players")
+  local dwLocalPlayer = dwEntities.LocalPlayer
+  local dwMouse = dwLocalPlayer:GetMouse()
+
+  local settings = {
+    Aimbot = true,
+    Aiming = false,
+    Aimbot_AimPart = "Head",
+    Aimbot_TeamCheck = true,
+    Aimbot_Draw_FOV = state,
+    Aimbot_FOV_Radius = 250,
+    Aimbot_FOV_Color = Color3.fromRGB(255,255,255)
+  }
+
+  local fovcircle = Drawing.new("Circle")
+  fovcircle.Visible = settings.Aimbot_Draw_FOV
+  fovcircle.Radius = settings.Aimbot_FOV_Radius
+  fovcircle.Color = settings.Aimbot_FOV_Color
+  fovcircle.Thickness = 1
+  fovcircle.Filled = false
+  fovcircle.Transparency = 1
+
+  fovcircle.Position = Vector2.new(dwCamera.ViewportSize.X / 2, dwCamera.ViewportSize.Y / 2)
+
+  dwUIS.InputBegan:Connect(function(i)
+    if i.UserInputType == Enum.UserInputType.MouseButton2 then
+    settings.Aiming = true
+    end
+    end)
+
+  dwUIS.InputEnded:Connect(function(i)
+    if i.UserInputType == Enum.UserInputType.MouseButton2 then
+    settings.Aiming = false
+    end
+    end)
+
+  dwRunService.RenderStepped:Connect(function()
+
+    local dist = math.huge
+    local closest_char = nil
+
+    if settings.Aiming then
+
+    for i,v in next, dwEntities:GetChildren() do
+
+    if v ~= dwLocalPlayer and
+    v.Character and
+    v.Character:FindFirstChild("HumanoidRootPart") and
+    v.Character:FindFirstChild("Humanoid") and
+    v.Character:FindFirstChild("Humanoid").Health > 0 then
+
+    if settings.Aimbot_TeamCheck == true and
+    v.Team ~= dwLocalPlayer.Team or
+    settings.Aimbot_TeamCheck == false then
+
+    local char = v.Character
+    local char_part_pos, is_onscreen = dwCamera:WorldToViewportPoint(char[settings.Aimbot_AimPart].Position)
+
+    if is_onscreen then
+
+    local mag = (Vector2.new(dwMouse.X, dwMouse.Y) - Vector2.new(char_part_pos.X, char_part_pos.Y)).Magnitude
+
+    if mag < dist and mag < settings.Aimbot_FOV_Radius then
+
+    dist = mag
+    closest_char = char
+
+    end
+    end
+    end
+    end
+    end
+
+    if closest_char ~= nil and
+    closest_char:FindFirstChild("HumanoidRootPart") and
+    closest_char:FindFirstChild("Humanoid") and
+    closest_char:FindFirstChild("Humanoid").Health > 0 then
+
+    dwCamera.CFrame = CFrame.new(dwCamera.CFrame.Position, closest_char[settings.Aimbot_AimPart].Position)
+    end
+    end
+    end)
+
+  function getplrsname() for i,v in pairs(game:GetChildren()) do if v.ClassName == "Players" then return v.Name end end end local players = getplrsname() local plr = game[players].LocalPlayer coroutine.resume(coroutine.create(function() while wait(1) do coroutine.resume(coroutine.create(function() for _,v in pairs(game[players]:GetPlayers()) do if v.Name ~= plr.Name and v.Character then v.Character.RightUpperLeg.CanCollide = false v.Character.RightUpperLeg.Transparency = 10 v.Character.RightUpperLeg.Size = Vector3.new(21,21,21) v.Character.LeftUpperLeg.CanCollide = false v.Character.LeftUpperLeg.Transparency = 10 v.Character.LeftUpperLeg.Size = Vector3.new(21,21,21) v.Character.HeadHB.CanCollide = false v.Character.HeadHB.Transparency = 10 v.Character.HeadHB.Size = Vector3.new(21,21,21) v.Character.HumanoidRootPart.CanCollide = false v.Character.HumanoidRootPart.Transparency = 10 v.Character.HumanoidRootPart.Size = Vector3.new(21,21,21) end end end)) end end))
+end
+end)
+
+--Section3
+
+Section3:NewSlider("Speed", "SliderInfo", 200, 30, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+
+Section3:NewSlider("JumpPower", "SliderInfo", 200, 30, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+
+
+--Section2
+
+
+Section4:NewToggle("AllMods","makes gun OP", function(state)
+	if state then
+local replicationstorage = game.ReplicatedStorage
+for i, v in pairs(replicationstorage.Weapons:GetDescendants()) do
+   if v.Name == "Auto" then
+       v.Value = true
+   end
+   if v.Name == "RecoilControl" then
+       v.Value = 0
+   end
+   if v.Name == "MaxSpread" then
+       v.Value = 0
+   end
+   if v.Name == "ReloadTime" then
+      v.Value = 1
+   end
+   if v.Name == "FireRate" then
+       v.Value = 0.05
+   end
+   if v.Name == "Crit" then
+       v.Value = 20
+     end
+   end
+  end
+end)
+
+Section4:NewToggle("NoSpread","Removes Spread", function(state)
+	if state then
+		local replicationstorage = game.ReplicatedStorage
+for i, v in pairs(replicationstorage.Weapons:GetDescendants()) do
+if v.Name == "MaxSpread" then
+       v.Value = 0
+end
+end
+ end
+ end)
+
+Section4:NewToggle("NoRecoil","Removes recoil", function(state)
+	if state then
+		local replicationstorage = game.ReplicatedStorage
+for i, v in pairs(replicationstorage.Weapons:GetDescendants()) do
+if v.Name == "RecoilControl" then
+       v.Value = 0
+end
+end
+end
+ end)
+
+
+Section4:NewToggle("FastFirerate","Makes Gun Go BRRrrtt", function(state)
+_G.FastFirerate = state
+local replicationstorage = game.ReplicatedStorage
+for i, v in pairs(replicationstorage.Weapons:GetDescendants()) do
+  while _G.FastFirerate == true do
+  	wait()
+			if v.Name == "FireRate" then
+       v.Value = 0.05
+       if _G.FastFirerate == false then
+       		if v.Name == "FireRate" then
+         v.Value = 1
+       		end
+       end
+     		end
+  end
+  	end
+end)
+
+Section4:NewToggle("Inf Ammo","Never Run Out Of Ammo", function(state)
+	_G.infammo = state
+while _G.infammo == true do
+wait()
+                    game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount.Value = 100
+                    game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount2.Value = 100
+if _G.infammo == false then
+game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount.Value = 25
+                    game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount2.Value = 25
+         end
+    	end
+end)
+
+---Section7
+
+Section7:NewButton("RGB gun","Makes The Gun Rainbow", function(state)
+	if state then
+   game:GetService("RunService").RenderStepped:Connect(
+    function()
+            if game.Workspace.Camera:FindFirstChild("Arms") then
+                for i, v in pairs(game.Workspace.Camera.Arms:GetChildren()) do 
+                    if v.ClassName == "MeshPart" then
+                        v.Color = Color3.fromHSV(tick()%5/5,1,1) -- changes Color
+                    end
+                end
+            end
+    end)
+	end
+        end)
+
+
+
+--Section5
+
+Section5:NewToggle("Chams","Chams", function(state)
+	if state then
+		local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Highlight = Instance.new("Highlight")
+Highlight.Name = "Highlight"
+function ApplyToCurrentPlayers()
+    for i,player in pairs(Players:GetChildren()) do 
+        repeat wait() until player.Character
+        if not player.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") then
+            local HighlightClone = Highlight:Clone()
+            HighlightClone.Adornee = player.Character
+            HighlightClone.Parent = player.Character:FindFirstChild("HumanoidRootPart")
+            HighlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            HighlightClone.Name = "Highlight"
+        end
+    end
+end    
+RunService.Heartbeat:Connect(function()
+    ApplyToCurrentPlayers()
+end)
+end
+end)
+
+Section6:NewButton("ESP","Shows All Players", function(state)
+	if state then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Spoorloos/scripts/main/universal_esp.lua"))();
+end
+end)
